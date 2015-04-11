@@ -10,3 +10,4 @@ http://www.kurzweilai.net/deep-neural-network-rivals-primate-brain-in-object-rec
 
 http://www.mathworks.com/matlabcentral/fileexchange/42008-content-based-image-retrieval
 https://github.com/kirk86/ImageRetrieval
+http://cs.nyu.edu/~fergus/pmwiki/pmwiki.php
