@@ -1,0 +1,13 @@
+# Ignore images:
+*.jpeg
+*.jpg
+*.png
+*.tif
+*.tiff
+
+# Ignore executable junk:
+*.pyc
+
+# Ignore the rest of crap:
+*.txt
+
