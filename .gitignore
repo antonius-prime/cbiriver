@@ -10,4 +10,11 @@
 
 # Ignore the rest of crap:
 *.txt
+*.pgm
+*.tmp
+*.pkl
+*.db
+
+# Ignore bigass directories:
+images
 

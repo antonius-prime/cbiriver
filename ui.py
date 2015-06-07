@@ -9,7 +9,13 @@ class Gui (QtGui.QWidget):
 
     def __init__(self):
         super(Gui, self).__init__()
+        self.initConfiguration()
         self.initUI()
+
+    def initConfiguration():
+        """ This method declares/defines programs configuration variables."""
+        self.currDir = '.'
+        self.DB = None
 
     def initUI(self):
 
@@ -37,18 +43,48 @@ class Gui (QtGui.QWidget):
         similarity metric
         """
 
-        layout = QtGui.QVBoxLayout()
+        def populateMetrics():
+            loadMetricBtn.addItem('L1')
+            loadMetricBtn.addItem('L2')
 
-        chooseImageBtn = QtGui.QPushButton('Choose')
+        layout = QtGui.QGridLayout()
+        spacing = 10
+        layout.setSpacing(spacing)
+
+        # Buttons
+        executeQueryBtn = QtGui.QPushButton('Execute query')
+        chooseImageBtn = QtGui.QPushButton('Query image')
         loadDatabaseBtn = QtGui.QPushButton('Load DB')
         loadMetricBtn = QtGui.QComboBox()
+        numberOfImagesSB = QtGui.QSpinBox()
+        populateMetrics ()
 
-        chooseImageBtn.clicked.connect(self.chooseQueryImg)
+        # Labels
+        chooseImageLbl = QtGui.QLabel('Image not choosen')
+        loadDatabaseLbl = QtGui.QLabel('Database not loaded')
+        loadMetricLbl = QtGui.QLabel()
 
-        layout.addWidget(chooseImageBtn)
-        layout.addWidget(loadDatabaseBtn)
-        layout.addWidget(loadMetricBtn)
+        # Adjust the button dimensions
+        width  = 100
+        height = 30
+        chooseImageBtn.setMaximumSize(width,height)
+        loadDatabaseBtn.setMaximumSize(width,height)
+        loadMetricBtn.setMaximumSize(width,height)
+        numberOfImagesSB.setMaximumSize(width,height)        
 
+        chooseImageBtn.clicked.connect(lambda: self.chooseQueryImg(chooseImageLbl))
+        loadDatabaseBtn.clicked.connect(lambda: self.chooseDB(loadDatabaseLbl))
+
+        layout.addWidget(chooseImageBtn, 0, 1)
+        layout.addWidget(loadDatabaseBtn, 1, 1)
+        layout.addWidget(loadMetricBtn, 2, 1, 2 ,1)
+        layout.addWidget(numberOfImagesSB, 3, 1)
+        layout.addWidget(executeQueryBtn, 4, 1, 3, 1)
+
+
+        layout.addWidget(chooseImageLbl, 0, 2)
+        layout.addWidget(loadDatabaseLbl, 1, 2)
+        layout.addWidget(loadMetricLbl, 2, 2)
 
         return layout
 
@@ -62,7 +98,7 @@ class Gui (QtGui.QWidget):
 
 
         # Display the images:
-        self.queryImg = thumbnail('avatar.jpeg')
+        self.queryImg = thumbnail('linux-python-logo.jpg')
         
         layout.addWidget(self.queryImg, 0, 2)
         self.populateResultGrid(layout)
@@ -91,16 +127,22 @@ class Gui (QtGui.QWidget):
 
         return
 
-    def chooseQueryImg(self):
-
-        currDir='.'
+    def chooseQueryImg(self, label):
+        """ Choose the query image."""
         
-        fname = QtGui.QFileDialog.getOpenFileName(self, 'Open file', currDir)
+        fname = QtGui.QFileDialog.getOpenFileName(self, 'Open file', self.currDir)
         self.queryImg.setIcon(QtGui.QIcon(fname))
+        label.setText(fname)
+
+    def chooseDB (self, label):
+        """ Choose the image database."""
+        
+        db_name = QtGui.QFileDialog.getOpenFileName(self, 'Open file', self.currDir)
+        label.setText(db_name)
+        self
 
 
-
-def thumbnail(resName, width=50, height=50):
+def thumbnail(resName, width=70, height=70):
     """
     Take the path to the image and, optionaly the wanted size and
     return the thumbnail of the image.
@@ -114,9 +156,9 @@ def thumbnail(resName, width=50, height=50):
     btn.resize(width,height)
     btn.setMaximumSize(width,height)
     btn.setMinimumSize(width,height)
+
     return btn
 
-    
 
 def main():
 
@@ -133,21 +175,4 @@ TODO
 thumbnail borders
 scrollable grid
 """
-
-# JUNK
-def thumbnail2(resName, width=50, height=50):
-    """
-    Take the path to the image and, optionaly the wanted size and
-    return the thumbnail of the image.
-
-    """
-
-    icon = QtGui.QPixmap(resName)
-    btn  = QtGui.QLabel()
-    btn.setPixmap(icon)
-#    btn.setPixmapSize(QSize(width,heigh
-    btn.setMaximumSize(width,height)
-    btn.resize(width, height)
-
-    return btn
     
