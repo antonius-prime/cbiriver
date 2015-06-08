@@ -18,3 +18,8 @@
 # Ignore bigass directories:
 images
 
+# Ignore the testing scripts (for now):
+test_*
+
+# Ignore limbo files:
+.#*
